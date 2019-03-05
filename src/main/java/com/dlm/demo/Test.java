@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,14 +31,7 @@ public class Test {
 			String s = "		<td  class='width90' title=\"\"></td>";
 			System.out.println(s);
 		}
-		/*
-		 * people people=new people("YY",18,0); Object
-		 * vObject=getFieldValueByName("age",people);
-		 * System.out.println(JSON.toJSONString(vObject));
-		 * System.out.println(JSON.toJSONString(getFiledName(people)));
-		 * System.out.println(JSON.toJSONString(getFiledsInfo(people)));
-		 * System.out.println(JSON.toJSONString(getFiledValues(people)));
-		 */
+
 
 		// System.out.println(String.format("%tc", new Date()));
 		// System.out.println(new Date());
@@ -111,5 +105,13 @@ public class Test {
 			value[i] = new Test().getFieldValueByName(fieldNames[i], o);
 		}
 		return value;
+	}
+
+	public static void a() {
+		Iterator iterator=null;
+		while (iterator.hasNext()) {
+			System.out.println(1);
+		}
+		}
 	}
 }
